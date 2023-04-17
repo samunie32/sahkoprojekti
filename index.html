@@ -1,13 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="tyyli.css">
     <meta charset="UTF-8">
     <title>Lataa Tiedot</title>
 </head>
 <body>
+<ul>
+    <li><a class="active" href=index.html style="float: left;font-size: 26px">Sähkölisko</a></li>
+
+
+    <li><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;float:right ">Kirjaudu</button></li>
+</ul>
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" action="kirjautuminen.php" method="post">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+
+        </div>
+
+        <div class="container">
+            <label for="uname"><b>Käyttäjätunnus</b><br></label>
+            <input type="text" placeholder="Syötä käyttäjätunnus" name="uname" required>
+
+            <label for="psw"><b>Salasana</b></label>
+            <input type="salasana" placeholder="Syötä salasana" name="psw" required>
+
+            <button type="submit">Kirjaudu</button>
+            <label>
+                <input type="checkbox" checked="checked" name="remember"> Muista minut
+            </label>
+        </div>
+
+        <div class="container" style="background-color:#f1f1f1">
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Peruuta</button>
+            <span class="psw"> <a href="rekisteröityminen.html">Rekisteröidy</a></span>
+        </div>
+    </form>
+</div>
 <h1>Lataa kulutus tietosi csv muodossa</h1>
 <p>Saat valmiin csv-filen ladattua osoitteesta....</p>
 <p>ohjeet lataukseen</p>
+
+
+<!-- Luo nappi, jolla avataan modaalinen lomake -->
+<button onclick="openModal()">Ohjeet</button>
+
+<!-- Luo modaalinen elementti -->
+<div id="myModal" class="modal">
+
+    <!-- Modaalin sisältö -->
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span> <!-- Sulje nappi -->
+        <h2>Ohjeet</h2>
+        <p>liirum laarum</p>
+    </div>
+
+</div>
+
+<script>
+    // Funktio avaa modaalisen elementin
+    function openModal() {
+        document.getElementById("myModal").style.display = "block";
+    }
+
+    // Funktio sulkee modaalisen elementin
+    function closeModal() {
+        document.getElementById("myModal").style.display = "none";
+    }
+</script>
+
+</body>
+</html>
+
 <script type="text/javascript">
     function Upload() {
         var fileUpload = document.getElementById("fileUpload");

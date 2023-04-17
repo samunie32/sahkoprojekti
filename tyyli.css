@@ -1,0 +1,37 @@
+
+    /* Tyyli modaalille */
+.modal {
+    display: none; /* Piilotetaan modaalinen elementti oletuksena */
+    position: fixed; /* Asetetaan elementti kiinni näytön reunaan */
+    z-index: 1; /* Asetetaan elementin z-indeksi, jotta se näkyy muiden elementtien päällä */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4); /* Asetetaan taustaväri hieman läpinäkyväksi */
+}
+
+/* Tyyli modaalille sisällä */
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Tyyli sulje napille */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Tyyli sulje napille, kun hiiri on sen päällä */
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
