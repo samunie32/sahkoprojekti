@@ -22,7 +22,7 @@
 
 /* Tyyli sulje napille */
 .close {
-    color: #aaa;
+    color: #312936;
     float: right;
     font-size: 28px;
     font-weight: bold;
@@ -31,7 +31,142 @@
 /* Tyyli sulje napille, kun hiiri on sen päällä */
 .close:hover,
 .close:focus {
-    color: black;
+    color: #ecc9ee;
     text-decoration: none;
     cursor: pointer;
 }
+
+    html {
+        background:#312936FF;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        background: #fff9f9;
+        box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
+        color: #545454;
+        font-family: "Gopher", sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+        margin: auto;
+        max-width: 800px;
+        padding: 2em 2em 4em;
+    }
+
+    h1, h2, h4, h5, h6 {
+        color: #222;
+        font-family: "gopher", sans-serif;
+        font-weight: 700;
+        font-style: normal;
+    }
+
+
+
+    }
+
+    tr:hover {background-color: #9384D1;}
+
+    button {
+        margin-top: 12px;
+        font-family: "Gopher", sans-serif;
+    }
+
+    .navbar {
+        list-style-type: none;
+
+        margin-top: 16px;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+
+    }
+
+    .nav-item {
+        float: left;
+        font-family: "gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .sc {
+        float: right;
+        padding-top: 3px;
+        padding-right: 10px;
+
+    }
+
+    .sc a:hover {
+        display: block;
+    }
+
+    .login {
+        margin: auto;
+        width: 500px;
+        text-align: center  ;
+
+    }
+
+
+
+    .home {
+        float: left;
+        padding-top: 3px;
+        padding-left:10px;
+
+    }
+
+    .nav-link {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+
+    .navbarv {
+        width: 200px;
+        height: 100%;
+        background-color: #f9f9f9;
+        float: left;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        z-index: 1;
+        margin: 20px 12px;
+
+    }
+
+    .navbarv ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .navbarv li {
+        padding: 10px;
+        background-color: #f9f9f9;
+        min-width: 160px;
+
+    }
+
+    .navbarv a {
+        display: block;
+        text-decoration: none;
+        color: black;
+    }
+
+    .nav-link {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .navbarv li:hover {
+        background-color: #f1f1f1;
+    }
+
+    .admin_content {
+        margin: 20px 12px;
+        float:left
+    }
