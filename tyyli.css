@@ -13,18 +13,32 @@
 
 /* Tyyli modaalille sisällä */
 .modal-content {
-    background-color: white;
+    background-color: #fff9f9;
     margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    flex-direction: column;
+    position: relative;
+    align-self: flex-start;
+    flex-grow: 0;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px;
+
+    width: 40%;
+    height: 60%;
+}
+.container {
+    display: inline-grid;
+
+
+
 }
 
 /* Tyyli sulje napille */
 .close {
     color: #312936;
     float: right;
-    font-size: 28px;
+    font-size: 30px;
     font-weight: bold;
 }
 
@@ -36,137 +50,97 @@
     cursor: pointer;
 }
 
-    html {
-        background:#312936FF;
-        -webkit-font-smoothing: antialiased;
-    }
+html {
+    background: #faeeea;
+    -webkit-font-smoothing: antialiased;
+}
 
-    body {
-        background: #fff9f9;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
-        color: #545454;
-        font-family: "Gopher", sans-serif;
-        font-size: 16px;
-        line-height: 1.5;
-        margin: auto;
-        max-width: 800px;
-        padding: 2em 2em 4em;
-    }
+body {
+    background: #fff9f9;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
+    color: #545454;
+    font-family: "Gopher", sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: auto;
+    max-width: 1200px;
+    padding: 2em 2em 4em;
+}
 
-    h1, h2, h4, h5, h6 {
-        color: #222;
-        font-family: "gopher", sans-serif;
-        font-weight: 700;
-        font-style: normal;
-    }
+h1, h2, h4, h5, h6 {
+    color: #222;
+    font-family: "gopher", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
 
+button {;
+    font-family: "Gopher", sans-serif;
+    color: #fff9f9;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 7px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 
+    background: #312936;
 
-    }
-
-    tr:hover {background-color: #9384D1;}
-
-    button {
-        margin-top: 12px;
-        font-family: "Gopher", sans-serif;
-    }
-
-    .navbar {
-        list-style-type: none;
-
-        margin-top: 16px;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-
-    }
-
-    .nav-item {
-        float: left;
-        font-family: "gopher", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-    }
-
-    .sc {
-        float: right;
-        padding-top: 3px;
-        padding-right: 10px;
-
-    }
-
-    .sc a:hover {
-        display: block;
-    }
-
-    .login {
-        margin: auto;
-        width: 500px;
-        text-align: center  ;
-
-    }
+    border-radius: 5px;
 
 
+}
 
-    .home {
-        float: left;
-        padding-top: 3px;
-        padding-left:10px;
+.button2 {;
+    font-family: "Gopher", sans-serif;
+    color: #312936;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 7px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 
-    }
-
-    .nav-link {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
+    background: #ffffff;
+    border-radius: 5px;
+    border-color: #312936;
 
 
-    .navbarv {
-        width: 200px;
-        height: 100%;
-        background-color: #f9f9f9;
-        float: left;
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        z-index: 1;
-        margin: 20px 12px;
+}
+.navbar{
+    list-style-type: none;
+    overflow: hidden;
+    background-color: #312936;
+    width: initial;
+}
 
-    }
+.nav-link {
+    display: block;
+    color: #fff9f9;
+    text-align: center;
+    text-decoration: none;
+}
 
-    .navbarv ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-    }
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
 
-    .navbarv li {
-        padding: 10px;
-        background-color: #f9f9f9;
-        min-width: 160px;
+li {
+    float: left;
+}
 
-    }
+li a {
+    display: block;
+    color: #fff9f9;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
 
-    .navbarv a {
-        display: block;
-        text-decoration: none;
-        color: black;
-    }
-
-    .nav-link {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
-
-    .navbarv li:hover {
-        background-color: #f1f1f1;
-    }
-
-    .admin_content {
-        margin: 20px 12px;
-        float:left
+li a:hover {
+    color: #ecc9ee;
     }

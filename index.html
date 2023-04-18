@@ -35,21 +35,26 @@
 
 </head>
 <body>
-<ul>
-    <li><a class="active" href=index.html style="float: left;font-size: 26px">Sähkölisko</a></li>
 
+<ul class="navbar">
+    <li>
+        <a class="nav-link" href=index.html >Sähkölisko</a></li>
+    <li style="float:right">
+        <a onclick="document.getElementById('id01').style.display='block'">Kirjaudu</a></li>
+    <li style="float:right">
+        <a class="nav-link" href=rekisteröityminen.html >Rekisteröidy</a></li>
 
-    <li><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;float:right ">Kirjaudu</button></li>
 </ul>
-<div id="id01" class="modal">
 
+<div id="id01" class="modal">
     <form class="modal-content animate" action="kirjautuminen.php" method="post">
         <div class="imgcontainer">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-
         </div>
 
         <div class="container">
+            <h1> Tervetuloa takaisin</h1>
+            <p>Kirjaudu sisään jatkaaksesi.</p>
             <label for="uname"><b>Käyttäjätunnus</b><br></label>
             <input type="text" placeholder="Syötä käyttäjätunnus" name="uname" required>
 
@@ -60,21 +65,19 @@
             <label>
                 <input type="checkbox" checked="checked" name="remember"> Muista minut
             </label>
-        </div>
 
-        <div class="container" style="background-color:#f1f1f1">
-            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Peruuta</button>
+            <button class="button button2" type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Peruuta</button>
             <span class="psw"> <a href="rekisteröityminen.html">Rekisteröidy</a></span>
         </div>
     </form>
 </div>
-<h1>Lataa kulutus tietosi csv muodossa</h1>
-<p>Saat valmiin csv-filen ladattua osoitteesta....</p>
-<p>ohjeet lataukseen</p>
+<h1>Seuraa ja ymmärrä omaa sähkönkulutustasi.</h1>
+<p>Saat valmiin csv-tiedoston ladattua <a href="https://oma.datahub.fi/#/login?returnUrl=%2F">tästä linkistä</a>.</p>
 
 
 
-<button onclick="openModal()">Ohjeet</button>
+
+<button class="button button2" onclick="openModal()">Ohjeet</button>
 
 
 <div id="myModal" class="modal">
@@ -83,7 +86,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Ohjeet</h2>
-        <p>liirum laarum</p>
+        <p>Hae datahub:ista oma sähkönkulutuksesi. Tallenna csv-tiedosto esimerkiksi työpöydällesi. Lataa sen jälkeen tiedosto Lataa tiedosto-painikkeen kautta.</p>
     </div>
 
 </div>
@@ -94,14 +97,12 @@
         document.getElementById("myModal").style.display = "block";
     }
 
-
     function closeModal() {
         document.getElementById("myModal").style.display = "none";
     }
 </script>
 
-</body>
-</html>
+
 <script>
 function Upload() {
 var fileUpload = document.getElementById("fileUpload");
@@ -146,7 +147,8 @@ alert("Please upload a valid CSV file.");
 }
 </script>
 <input type="file" id="fileUpload" />
-<input type="button" id="upload" value="Upload" onclick="Upload()" />
+
+<button onclick="Upload()">Lataa tiedosto</button>
 <hr />
 <div id="dvCSV">
 </div>
