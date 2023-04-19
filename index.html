@@ -1,39 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
-    <link rel="stylesheet" href="tyyli.css">
-    <meta charset="UTF-8">
-    <title>Lataa Tiedot</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+<link rel="stylesheet" href="tyyli.css">
+<meta charset="UTF-8">
+<title>Lataa Tiedot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    @import url("https://use.typekit.net/xfa2oxy.css");
+    ::placeholder {
+        color: #a8a7a7;
+        font-family: "Gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        opacity: 1; /* Firefox */
+    }
 
-    <style>
-        @import url("https://use.typekit.net/xfa2oxy.css");
-        ::placeholder {
-            color: #a8a7a7;
-            font-family: "Gopher", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-            opacity: 1; /* Firefox */
-        }
+    :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #a8a7a7;
+        font-family: "Gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
 
-        :-ms-input-placeholder { /* Internet Explorer 10-11 */
-            color: #a8a7a7;
-            font-family: "Gopher", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-
-        ::-ms-input-placeholder { /* Microsoft Edge */
-            color: #a8a7a7;
-            font-family: "Gopher", sans-serif;
-            font-weight: 400;
-            font-style: normal;
-        }
-        </style>
-
-
+    ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #a8a7a7;
+        font-family: "Gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+</style>
 </head>
+
 <body>
 
 <ul class="navbar">
@@ -74,15 +74,9 @@
 <h1>Seuraa ja ymmärrä omaa sähkönkulutustasi.</h1>
 <p>Saat valmiin csv-tiedoston ladattua <a href="https://oma.datahub.fi/#/login?returnUrl=%2F">tästä linkistä</a>.</p>
 
-
-
-
 <button class="button button2" onclick="openModal()">Ohjeet</button>
 
-
 <div id="myModal" class="modal">
-
-
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Ohjeet</h2>
@@ -105,46 +99,61 @@
 
 <script>
 function Upload() {
-var fileUpload = document.getElementById("fileUpload");
-var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-if (regex.test(fileUpload.value.toLowerCase())) {
-if (typeof FileReader != "undefined") {
-var reader = new FileReader();
-reader.onload = function(e) {
-var rows = e.target.result.split("\n");
-var labels = [];
-var data = [];
-for (var i = 0; i < rows.length; i++) {
-var cells = rows[i].split(",");
-if (cells.length > 1) {
-labels.push(cells[0]);
-data.push(parseFloat(cells[1]));
+    var fileUpload = document.getElementById("fileUpload");
+    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+    if (regex.test(fileUpload.value.toLowerCase())) {
+        if (typeof FileReader != "undefined") {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var rows = e.target.result.split("\n");
+                var labels = [];
+                var data = [];
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].split(",");
+                    if (cells.length > 1) {
+                        labels.push(cells[0]);
+                        data.push(parseFloat(cells[1]));
+                    }
+                }
+                var ctx = document.getElementById("myChart").getContext("2d");
+                var myChart = new Chart(ctx, {
+                    type: "line",
+                    data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: "Data",
+                            data: data,
+                            borderColor: "blue",
+                            backgroundColor: "rgba(75,192,192,0.2)",
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            pointBackgroundColor: "blue",
+                            pointBorderColor: "blue",
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        };
+        reader.readAsText(fileUpload.files[0]);
+        }  else {
+            alert("This browser does not support HTML5.");
+    }
+        } else {
+            alert("Please upload a valid CSV file.");
+
+
 }
 }
-var ctx = document.getElementById("myChart").getContext("2d");
-var myChart = new Chart(ctx, {
-type: "line",
-data: {
-labels: labels,
-datasets: [
-{
-label: "Data",
-data: data,
-borderColor: "blue",
-fill: false
-}
-]
-}
-});
-};
-reader.readAsText(fileUpload.files[0]);
-} else {
-alert("This browser does not support HTML5.");
-}
-} else {
-alert("Please upload a valid CSV file.");
-}
-}
+document.getElementById("fileUpload").addEventListener("change", Upload);
 </script>
 <input type="file" id="fileUpload" />
 
