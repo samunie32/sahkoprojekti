@@ -4,37 +4,70 @@
   <link rel="stylesheet" href="tyyli.css">
     <meta charset="UTF-8">
     <title>Rekisteröidy</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+
+    <style>
+      @import url("https://use.typekit.net/xfa2oxy.css");
+      ::placeholder {
+        color: #a8a7a7;
+        font-family: "Gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        opacity: 1; /* Firefox */
+      }
+
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: #a8a7a7;
+        font-family: "Gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color: #a8a7a7;
+        font-family: "Gopher", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+      }
+    </style>
+
+
+  </head>
 </head>
 <body>
-<ul>
-  <li><a class="active" href=index.html style="float: left;font-size: 26px">Sähkölisko</a></li>
 
+<ul class="navbar">
+  <li>
+    <a class="nav-link" href=index.html >Sähkölisko</a></li>
+  <li style="float:right">
+    <a onclick="document.getElementById('id01').style.display='block'">Kirjaudu</a></li>
+  <li style="float:right">
+    <a class="nav-link" href=rekisteröityminen.html >Rekisteröidy</a></li>
 
-  <li><button onclick="document.getElementById('id01').style.display='block'" style="width:auto;float:right ">Kirjaudu</button></li>
 </ul>
-<div id="id01" class="modal">
 
+<div id="id01" class="modal">
   <form class="modal-content animate" action="kirjautuminen.php" method="post">
     <div class="imgcontainer">
       <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
-
     </div>
 
     <div class="container">
-      <label for="uname"><b>Käyttäjätunnus</b><br></label>
-      <input type="text" placeholder="Syötä käyttäjätunnus" name="uname" required>
+      <h1> Tervetuloa takaisin</h1>
+      <p>Kirjaudu sisään jatkaaksesi.</p>
+      <label for="mail"><b>Sähköpostiosoite</b><br></label>
+      <input type="text" placeholder="Syötä sähköpostiosoite" name="mail" required>
 
       <label for="psw"><b>Salasana</b></label>
-      <input type="salasana" placeholder="Syötä salasana" name="psw" required>
+      <input type="password" placeholder="Syötä salasana" name="psw" required>
 
       <button type="submit">Kirjaudu</button>
       <label>
         <input type="checkbox" checked="checked" name="remember"> Muista minut
       </label>
-    </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Peruuta</button>
+      <button class="button button2" type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Peruuta</button>
       <span class="psw"> <a href="rekisteröityminen.html">Rekisteröidy</a></span>
     </div>
   </form>
@@ -56,12 +89,6 @@
     <input type="text" placeholder="Puhelinnumero" name="puhelin" id="puhelin" required>
     <br>
 
-    <label for="kayttaja"><b>Käyttäjätunnus</b><br></label>
-    <input type="text" placeholder="Käyttäjätunnus" name="kayttaja" id="kayttaja" required>
-    <br>
-
-
-
     <label for="psw"><b>Salasana</b><br></label>
     <input type="password" placeholder="Syötä salasana" name="psw" id="psw" required>
     <br>
@@ -74,9 +101,6 @@
     <button type="submit" class="registerbtn">Rekisteröidy</button>
   </div>
 
-  <div class="container signin">
-    <p>Onko sinulla jo käyttäjä? <button onclick="document.getElementById('id01').style.display='block'">Kirjaudu sisään</p>
-  </div>
 </form>
 </body>
 </html>
