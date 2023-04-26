@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
-<link rel="stylesheet" href="tyyli.css">
-<meta charset="UTF-8">
-<title>Lataa Tiedot</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+    <link rel="stylesheet" href="tyyli.css">
+    <meta charset="UTF-8">
+    <title>Lataa Tiedot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
     @import url("https://use.typekit.net/xfa2oxy.css");
     ::placeholder {
@@ -33,7 +35,7 @@
     }
 </style>
 </head>
-
+<body>
 <ul class="navbar">
     <li>
         <a class="nav-link" href=index.html >Sähkölisko</a></li>
@@ -94,71 +96,93 @@
 </script>
 
 
+
 <script>
-function Upload() {
-    var fileUpload = document.getElementById("fileUpload");
-    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
-    if (regex.test(fileUpload.value.toLowerCase())) {
-        if (typeof FileReader != "undefined") {
-            var reader = new FileReader();
-            reader.onload = function(e) {
-                var rows = e.target.result.split("\n");
-                var labels = [];
-                var data = [];
-                for (var i = 0; i < rows.length; i++) {
-                    var cells = rows[i].split(",");
-                    if (cells.length > 1) {
-                        labels.push(cells[0]);
-                        data.push(parseFloat(cells[1]));
-                    }
-                }
-                var ctx = document.getElementById("myChart").getContext("2d");
-                var myChart = new Chart(ctx, {
-                    type: "line",
-                    data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            label: "Data",
-                            data: data,
-                            borderColor: "blue",
-                            backgroundColor: "rgba(75,192,192,0.2)",
-                            borderWidth: 2,
-                            pointRadius: 3,
-                            pointBackgroundColor: "blue",
-                            pointBorderColor: "blue",
-                            fill: false
-                        }
-                    ]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+    function Upload() {
+        var fileUpload = document.getElementById("fileUpload");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof FileReader != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var rows = e.target.result.split("\n");
+                    var labels = [];
+                    var data = [];
+                    var yLabel = "";
+                    for (var i = 1; i < rows.length; i++) {
+                        var cells = rows[i].split(";");
+                        if (cells.length > 1) {
+                            var date = new Date(cells[5].slice(0, -1));
+                            var formattedDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " klo " + date.getHours() + "." + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+                            labels.push(formattedDate);
+                            data.push(parseFloat(cells[6].replace(",", ".")));
+                            yLabel = cells[3] ;
                         }
                     }
-                }
-            });
-        };
-        reader.readAsText(fileUpload.files[0]);
-        }  else {
-            alert("This browser does not support HTML5.");
-    }
+                    var ctx = document.getElementById("myChart").getContext("2d");
+                    var myChart = new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "Kulutus (" + yLabel + ")",
+                                    data: data,
+                                    borderColor: "blue",
+                                    backgroundColor: "rgba(75,192,192,0.2)",
+                                    borderWidth: 2,
+                                    pointRadius: 3,
+                                    pointBackgroundColor: "blue",
+                                    pointBorderColor: "blue",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: yLabel
+                                    },
+                                    beginAtZero: true
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Aika'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                };
+                reader.readAsText(fileUpload.files[0]);
+            }  else {
+                alert("This browser does not support HTML5.");
+            }
         } else {
             alert("Please upload a valid CSV file.");
-
-
-}
-}
-document.getElementById("fileUpload").addEventListener("change", Upload);
+        }
+    }
+    document.getElementById("fileUpload").addEventListener("change", Upload);
 </script>
-<input type="file" id="fileUpload" />
 
+
+
+
+
+
+<input type="file" id="fileUpload" />
 <button onclick="Upload()">Lataa tiedosto</button>
 <hr />
-<div id="dvCSV">
-</div>
+<div id="dvCSV"></div>
 <canvas id="myChart"></canvas>
+
+
+
+
+
 
 
 </body>
