@@ -67,6 +67,16 @@ h1, h2, h4, h5, h6 {
     font-style: normal;
 }
 
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.hidden {
+    display: none;
+}
+
 button {;
     font-family: "Gopher", sans-serif;
     color: #fff9f9;
@@ -85,7 +95,7 @@ button {;
 
 }
     .button:hover {
-        background-color: #4CAF50; /* Green */
+        background-color: #312936;
         color: white;
     }
 .button2 {;

@@ -117,7 +117,7 @@ session_start();
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     var rows = e.target.result.split("\n");
-                   this.labels = labels;
+                    this.labels = labels;
                     this.data = data;
                     this.yLabel = yLabel;
                     for (var i = 1; i < rows.length; i++) {
@@ -139,14 +139,15 @@ session_start();
                                 {
                                     label: "Kulutus (" + yLabel + ")",
                                     data: data,
-                                    borderColor: "rgba(130, 255, 167, 0.8)",
-                                    backgroundColor: "rgba(75,192,192,0.2)",
+                                    borderColor: "rgb(49,41,54, 0.5)",
+                                    backgroundColor: "rgb(49,41,54, 0.2)",
                                     borderWidth: 2,
                                     pointRadius: 2,
                                     hoverRadius:5,
-                                    pointBackgroundColor: "rgba(96, 255, 144, 0.8)",
-                                    pointBorderColor: "rgba(96, 255, 144, 0.8)",
+                                    pointBackgroundColor: "rgb(49,41,54)",
+                                    pointBorderColor: "rgb(49,41,54)",
                                     fill: true
+
                                 }
                             ]
                         },
@@ -155,19 +156,61 @@ session_start();
                                 y: {
                                     title: {
                                         display: true,
-                                        text: yLabel
+                                        text: yLabel,
+                                        font: {
+                                            family: "Gopher",
+                                            weight: "bold"
+                                        }
+                                    },
+                                    ticks: {
+                                        font: {
+                                            family: "Gopher",
+                                        }
                                     },
                                     beginAtZero: true
                                 },
                                 x: {
                                     title: {
                                         display: true,
-                                        text: 'Aika'
+                                        text: 'Aika',
+                                        font: {
+                                            family: "Gopher",
+                                            weight: "bold"
+                                        }
+                                    },
+                                    ticks: {
+                                        font: {
+                                            family: "Gopher",
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: 'Kaavion otsikko',
+                                    font: {
+                                        family: 'Gopher',
+                                        weight: 'bold',
+                                        size: 24
+                                    },
+                                    padding: {
+                                        top: 10,
+                                        bottom: 30
+                                    }
+                                },
+                                legend: {
+                                    labels: {
+                                        font: {
+                                            family: "Gopher",
+                                            weight: "bold"
+                                        }
                                     }
                                 }
                             }
                         }
                     });
+                    document.getElementById("buttonContainer").classList.remove("hidden");
                 };
                 reader.readAsText(fileUpload.files[0]);
             }  else {
@@ -178,7 +221,6 @@ session_start();
         }
     }
     document.getElementById("fileUpload").addEventListener("change", Upload);
-
     function updateFilteredChart() {
         // Laske suurin 15% kulutus
         var maxConsumption = Math.max(...data) * 0.3;
@@ -269,11 +311,11 @@ session_start();
 <hr />
 <div id="dvCSV"></div>
 <canvas id="myChart" width="650" height="250"></canvas>
-<button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
-<button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
-<button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
-
-
+<div class="button-container hidden" id="buttonContainer">
+    <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
+    <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
+    <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
+</div>
 
 
 
