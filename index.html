@@ -1,3 +1,8 @@
+<?php
+
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,6 +89,9 @@
 
 </div>
 
+
+
+
 <script>
 
     function openModal() {
@@ -95,9 +103,12 @@
     }
 </script>
 
-
-
 <script>
+    var data = [];
+    var labels = [];
+    var yLabel = "";
+
+
     function Upload() {
         var fileUpload = document.getElementById("fileUpload");
         var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
@@ -106,9 +117,9 @@
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     var rows = e.target.result.split("\n");
-                    var labels = [];
-                    var data = [];
-                    var yLabel = "";
+                   this.labels = labels;
+                    this.data = data;
+                    this.yLabel = yLabel;
                     for (var i = 1; i < rows.length; i++) {
                         var cells = rows[i].split(";");
                         if (cells.length > 1) {
@@ -120,7 +131,7 @@
                         }
                     }
                     var ctx = document.getElementById("myChart").getContext("2d");
-                    var myChart = new Chart(ctx, {
+                    myChart = new Chart(ctx, {
                         type: "line",
                         data: {
                             labels: labels,
@@ -128,13 +139,14 @@
                                 {
                                     label: "Kulutus (" + yLabel + ")",
                                     data: data,
-                                    borderColor: "blue",
+                                    borderColor: "rgba(130, 255, 167, 0.8)",
                                     backgroundColor: "rgba(75,192,192,0.2)",
                                     borderWidth: 2,
-                                    pointRadius: 3,
-                                    pointBackgroundColor: "blue",
-                                    pointBorderColor: "blue",
-                                    fill: false
+                                    pointRadius: 2,
+                                    hoverRadius:5,
+                                    pointBackgroundColor: "rgba(96, 255, 144, 0.8)",
+                                    pointBorderColor: "rgba(96, 255, 144, 0.8)",
+                                    fill: true
                                 }
                             ]
                         },
@@ -166,19 +178,100 @@
         }
     }
     document.getElementById("fileUpload").addEventListener("change", Upload);
+
+    function updateFilteredChart() {
+        // Laske suurin 15% kulutus
+        var maxConsumption = Math.max(...data) * 0.3;
+
+        // Luo uusi data-array, joka sisältää vain suuremman tai yhtä suuren kulutuksen arvoja kuin maxConsumption
+        var filteredData = data.filter(function(value) {
+            return value >= maxConsumption;
+        });
+
+        // Luo uusi labels-array, joka sisältää vain saman verran arvoja kuin filteredData
+        var filteredLabels = labels.slice(0, filteredData.length);
+
+        // Päivitä kaavion data ja labelit
+        var ctx = document.getElementById("myChart").getContext("2d");
+        myChart.data.labels = filteredLabels;
+        myChart.data.datasets[0].data = filteredData;
+        myChart.update({
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutBounce'
+            }
+
+        });
+    }
+
+
+
+    document.getElementById("filterButton").addEventListener("click", updateFilteredChart);
+
+    function updateFilteredChart1() {
+
+        var maxConsumption = Math.min(...data) * 0;
+
+        // Luo uusi data-array, joka sisältää vain suuremman tai yhtä suuren kulutuksen arvoja kuin maxConsumption
+        var filteredData = data.filter(function(value) {
+            return value >= maxConsumption;
+        });
+
+        // Luo uusi labels-array, joka sisältää vain saman verran arvoja kuin filteredData
+        var filteredLabels = labels.slice(0, filteredData.length);
+
+        // Päivitä kaavion data ja labelit
+        var ctx = document.getElementById("myChart").getContext("2d");
+        myChart.data.labels = filteredLabels;
+        myChart.data.datasets[0].data = filteredData;
+        myChart.update({
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutBounce'
+            }
+        });
+    }
+
+
+
+    document.getElementById("filterButton1").addEventListener("click", updateFilteredChart1);
+
+    function updateFilteredChart2() {
+        // Laske noin 70% kulutus
+        var avgConsumption = data.reduce((a, b) => a + b, 0) * 1 / data.length;
+
+        // Luo uusi data-array, joka sisältää vain pienemmän tai yhtä suuren kulutuksen arvoja kuin avgConsumption
+        var filteredData = data.filter(function(value) {
+            return value <= avgConsumption;
+        });
+
+        // Luo uusi labels-array, joka sisältää vain saman verran arvoja kuin filteredData
+        var filteredLabels = labels.slice(0, filteredData.length);
+
+        // Päivitä kaavion data ja labelit
+        var ctx = document.getElementById("myChart").getContext("2d");
+        myChart.data.labels = filteredLabels;
+        myChart.data.datasets[0].data = filteredData;
+        myChart.update({
+            animation: {
+                duration: 1000,
+                easing: 'easeInOutBounce'
+            }
+        });
+    }
+    document.getElementById("filterButton2").addEventListener("click", updateFilteredChart2);
+
 </script>
 
 
-
-
-
-
 <input type="file" id="fileUpload" />
-<button onclick="Upload()">Lataa tiedosto</button>
+<button class="button button2" onclick="Upload()">Lataa tiedosto</button>
 <hr />
 <div id="dvCSV"></div>
-<canvas id="myChart"></canvas>
-
+<canvas id="myChart" width="650" height="250"></canvas>
+<button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
+<button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
+<button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
 
 
 

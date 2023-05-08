@@ -82,8 +82,12 @@ button {;
     border-radius: 5px;
     border-style: none;
 
-}
 
+}
+    .button:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
+    }
 .button2 {;
     font-family: "Gopher", sans-serif;
     color: #312936;
