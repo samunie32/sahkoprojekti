@@ -40,7 +40,7 @@ session_start();
     }
 </style>
 </head>
-<body>
+
 <ul class="navbar">
     <li>
         <a class="nav-link" href=index.html >Sähkölisko</a></li>
@@ -75,24 +75,23 @@ session_start();
         </div>
     </form>
 </div>
-<h1>Seuraa ja ymmärrä omaa sähkönkulutustasi.</h1>
-<p>Saat valmiin csv-tiedoston ladattua <a href="https://oma.datahub.fi/#/login?returnUrl=%2F">tästä linkistä</a>.</p>
 
-<button class="button button2" onclick="openModal()">Ohjeet</button>
+<div class="container1">
+    <h1>Seuraa ja ymmärrä omaa sähkönkulutustasi.</h1>
+    <p>Saat valmiin csv-tiedoston ladattua <a href="https://oma.datahub.fi/#/login?returnUrl=%2F">tästä linkistä</a>.</p>
 
-<div id="myModal" class="modal">
-    <div class="modal-content">
+    <button class="button button2" onclick="openModal()">Ohjeet</button>
+
+    <div id="myModal" class="modal">
+        <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Ohjeet</h2>
         <p>Hae datahub:ista oma sähkönkulutuksesi. Tallenna csv-tiedosto esimerkiksi työpöydällesi. Lataa sen jälkeen tiedosto Lataa tiedosto-painikkeen kautta.</p>
+        </div>
     </div>
 
-</div>
 
-
-
-
-<script>
+    <script>
 
     function openModal() {
         document.getElementById("myModal").style.display = "block";
@@ -233,6 +232,7 @@ session_start();
                     // Näytä kyselyn kehotus ja painike
                     document.getElementById("surveyPrompt").style.display = "block";
                     document.getElementById("surveyButton").style.display = "block";
+                    document.getElementById("sidebar").style.display = "block";
                 };
                 reader.readAsText(fileUpload.files[0]);
             }  else {
@@ -247,13 +247,15 @@ session_start();
         // Laske suurin 15% kulutus
         var maxConsumption = Math.max(...data) * 0.3;
 
-        // Luo uusi data-array, joka sisältää vain suuremman tai yhtä suuren kulutuksen arvoja kuin maxConsumption
-        var filteredData = data.filter(function(value) {
-            return value >= maxConsumption;
-        });
+        var filteredData = [];
+        var filteredLabels = [];
 
-        // Luo uusi labels-array, joka sisältää vain saman verran arvoja kuin filteredData
-        var filteredLabels = labels.slice(0, filteredData.length);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] >= maxConsumption) {
+                filteredData.push(data[i]);
+                filteredLabels.push(labels[i]);
+            }
+        }
 
         // Päivitä kaavion data ja labelit
         var ctx = document.getElementById("myChart").getContext("2d");
@@ -264,25 +266,24 @@ session_start();
                 duration: 1000,
                 easing: 'easeInOutBounce'
             }
-
         });
     }
-
 
 
     document.getElementById("filterButton").addEventListener("click", updateFilteredChart);
 
     function updateFilteredChart1() {
-
         var maxConsumption = Math.min(...data) * 0;
 
-        // Luo uusi data-array, joka sisältää vain suuremman tai yhtä suuren kulutuksen arvoja kuin maxConsumption
-        var filteredData = data.filter(function(value) {
-            return value >= maxConsumption;
-        });
+        var filteredData = [];
+        var filteredLabels = [];
 
-        // Luo uusi labels-array, joka sisältää vain saman verran arvoja kuin filteredData
-        var filteredLabels = labels.slice(0, filteredData.length);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] >= maxConsumption) {
+                filteredData.push(data[i]);
+                filteredLabels.push(labels[i]);
+            }
+        }
 
         // Päivitä kaavion data ja labelit
         var ctx = document.getElementById("myChart").getContext("2d");
@@ -295,22 +296,22 @@ session_start();
             }
         });
     }
-
-
 
     document.getElementById("filterButton1").addEventListener("click", updateFilteredChart1);
 
     function updateFilteredChart2() {
         // Laske noin 70% kulutus
-        var avgConsumption = data.reduce((a, b) => a + b, 0) * 1 / data.length;
+        var avgConsumption = data.reduce((a, b) => a + b, 0) / data.length;
 
-        // Luo uusi data-array, joka sisältää vain pienemmän tai yhtä suuren kulutuksen arvoja kuin avgConsumption
-        var filteredData = data.filter(function(value) {
-            return value <= avgConsumption;
-        });
+        var filteredData = [];
+        var filteredLabels = [];
 
-        // Luo uusi labels-array, joka sisältää vain saman verran arvoja kuin filteredData
-        var filteredLabels = labels.slice(0, filteredData.length);
+        for (var i = 0; i < data.length; i++) {
+            if (data[i] <= avgConsumption) {
+                filteredData.push(data[i]);
+                filteredLabels.push(labels[i]);
+            }
+        }
 
         // Päivitä kaavion data ja labelit
         var ctx = document.getElementById("myChart").getContext("2d");
@@ -323,6 +324,7 @@ session_start();
             }
         });
     }
+
     document.getElementById("filterButton2").addEventListener("click", updateFilteredChart2);
     function calculateYearlyConsumption(data) {
         // Lasketaan käytettävissä olevien tuntien määrä
@@ -344,15 +346,31 @@ session_start();
 
 <input type="file" id="fileUpload" />
 <button class="button button2" onclick="Upload()">Lataa tiedosto</button>
-<hr />
-<div id="dvCSV"></div>
-<canvas id="myChart" width="650" height="250"></canvas>
-<div class="button-container hidden" id="buttonContainer">
+</div>
+
+
+<div class="container2">
+    <div id="dvCSV"></div>
+    <canvas id="myChart" width="650" height="450"></canvas>
+    <div class="button-container hidden" id="buttonContainer">
     <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
     <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
     <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
 </div>
+</div>
 
+
+<div id="sidebar" style="display: none; justify-content: space-between; flex-direction: row;">
+    <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
+    <button class="button button1"> Kylmälaitteet 430kWh</button>
+    <button class="button button7"> Kodin elektroniikka 390kWh </button>
+    <button class="button button3"> Ruoan valmistus ja astianpesu 250kWh </button>
+    <button class="button button4"> Valaistus 170kWh</button>
+    <button class="button button5"> Pyykinpesu 80kWh</button>
+    <button class="button button6"> Muu 80kWh</button>
+</div>
+
+</div>
 
 <div id="surveyModal" class="modal">
     <div class="modal-content">
@@ -366,6 +384,7 @@ session_start();
         <button onclick="submitSurvey()">Lähetä</button>
     </div>
 </div>
+
 
 <p id="surveyPrompt" style="display: none;">Vastaa kyselyyn, jotta saat enemmän tietoa kulutuksestasi.</p>
 <button id="surveyButton" class="button button2" onclick="openSurveyModal()" style="display: none;">Vastaa kyselyyn</button>
@@ -385,5 +404,5 @@ closeSurveyModal();
 }
 </script>
 
-</body>
+
 </html>

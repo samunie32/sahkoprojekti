@@ -44,11 +44,7 @@
 }
 
 html {
-    background: #d9d8d8;
     -webkit-font-smoothing: antialiased;
-}
-
-body {
     background: #fff9f9;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
     color: #545454;
@@ -60,6 +56,8 @@ body {
     padding: 2em 2em 4em;
 }
 
+
+
 h1, h2, h4, h5, h6 {
     color: #222;
     font-family: "gopher", sans-serif;
@@ -69,8 +67,9 @@ h1, h2, h4, h5, h6 {
 
 .button-container {
     display: flex;
-    justify-content: center;
+    justify-content: left;
     gap: 10px;
+
 }
 
 .hidden {
@@ -115,6 +114,15 @@ button {;
 
 
 }
+
+.button1 { width: 250px }
+.button7 { width: 210px }
+.button3 { width: 170px }
+.button4 { width: 130px }
+.button5 { width: 90px }
+.button6 { width: 90px }
+
+
 .navbar{
     list-style-type: none;
     overflow: hidden;
@@ -152,3 +160,20 @@ li a:hover {
     color: #ecc9ee;
 }
 
+.container1 {
+    width: 100%;
+    float: left;
+}
+
+.container2 {
+    width: 70%;
+    float: left;
+    margin-right: 5%;
+}
+
+
+.sidebar {
+    width: 30%;
+
+    display: none; /* Aluksi sivupalkki on piilossa */
+}
