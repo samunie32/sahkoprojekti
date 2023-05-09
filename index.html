@@ -40,7 +40,7 @@ session_start();
     }
 </style>
 </head>
-
+<body>
 <ul class="navbar">
     <li>
         <a class="nav-link" href=index.html >Sähkölisko</a></li>
@@ -360,14 +360,15 @@ session_start();
 </div>
 
 
-<div id="sidebar" style="display: none; justify-content: space-between; flex-direction: row;">
+<div id="sidebar" style="display: none;">
     <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
-    <button class="button button1"> Kylmälaitteet 430kWh</button>
-    <button class="button button7"> Kodin elektroniikka 390kWh </button>
-    <button class="button button3"> Ruoan valmistus ja astianpesu 250kWh </button>
-    <button class="button button4"> Valaistus 170kWh</button>
-    <button class="button button5"> Pyykinpesu 80kWh</button>
-    <button class="button button6"> Muu 80kWh</button>
+    <p>Kylmälaitteet: 430kWh</p>
+    <p>Kodin elektroniikka: 390kWh </p>
+    <p>Ruoan valmistus ja astianpesu: 250kWh </p>
+    <p>Valaistus: 170kWh</p>
+    <p>Pyykinpesu: 80kWh</p>
+    <p>Muu: 80kWh</p>
+
 </div>
 
 </div>
@@ -376,33 +377,102 @@ session_start();
     <div class="modal-content">
         <span class="close" onclick="closeSurveyModal()">&times;</span>
         <h2>Kysely</h2>
-        <!-- Tähän voit lisätä kyselyn kysymykset. -->
-        <p>Kysymys 1</p>
-        <p>Kysymys 2</p>
-        <p>Kysymys 3</p>
+        <div id="surveyQuestion1" class="survey-question">
+            <p>Mikä on asumismuotosi:</p>
+            <div class="answer-container">
+                <button id="survey-answer" class="button button2" onclick="showQuestion(2)">Rivitalo</button>
+                <button id="survey-answer" class="button button2" onclick="showQuestion(2)">Kerrostalo</button>
+                <button id="survey-answer" class="button button2" onclick="showQuestion(2)">Omakotitalo</button>
+            </div>
+        </div>
+        <div id="surveyQuestion2" class="survey-question" style="display: none;">
+            <p>Asunnon pinta-ala:</p>
+            <div class="answer-container">
+                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">0-30</button>
+                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">31-50</button>
+                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">51-70</button>
+                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">71-100</button>
+                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">101-200</button>
+            </div>
+        </div>
+        <div id="surveyQuestion3" class="survey-question" style="display: none;">
+            <p>Valitse taloudessasi käytettävät laitteet:</p>
+            <div class="answer-container">
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Jääkaappi-pakastin')">Jääkaappi-pakastin</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Jääkaappi')">Jääkaappi</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Pakastin')">Pakastin</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Uuni')">Uuni</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Induktioliesi')">Induktioliesi</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Liesi')">Liesi</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Pelikonsoli')">Pelikonsoli</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Ilmalämpöpumppu')">Ilmalämpöpumppu</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Sähkölämmitys')">Sähkölämmitys</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Sähkösauna')">Sähkösauna</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Pyykinpesukone')">Pyykinpesukone</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Kuivausrumpu')">Kuivausrumpu</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Astianpesukone')">Astianpesukone</button>
+                <button class="survey-answer button button2" onclick="selectAnswer(this,3, 'Sähköauto')">Sähköauto</button>
+            </div>
+        </div>
+
         <!-- Lisää painike, jolla käyttäjä voi lähettää kyselyn -->
-        <button onclick="submitSurvey()">Lähetä</button>
+        <button onclick="submitSurvey()" style="display: none;" id="submitSurvey">Lähetä</button>
     </div>
 </div>
-
 
 <p id="surveyPrompt" style="display: none;">Vastaa kyselyyn, jotta saat enemmän tietoa kulutuksestasi.</p>
 <button id="surveyButton" class="button button2" onclick="openSurveyModal()" style="display: none;">Vastaa kyselyyn</button>
 
+
 <script>
-function openSurveyModal() {
-document.getElementById("surveyModal").style.display = "block";
-}
+    // Muuta selectAnswer-funktiota ottamaan vastaan painike-argumentti
+    function selectAnswer(button, questionNumber, answer) {
+        if (!selectedAnswers[questionNumber]) {
+            selectedAnswers[questionNumber] = [];
+        }
 
-function closeSurveyModal() {
-document.getElementById("surveyModal").style.display = "none";
-}
+        // Lisää tai poista vastaus luettelosta
+        var index = selectedAnswers[questionNumber].indexOf(answer);
+        if (index === -1) {
+            selectedAnswers[questionNumber].push(answer);
+            button.classList.add('selected');  // Lisää 'selected'-luokka painikkeeseen
+        } else {
+            selectedAnswers[questionNumber].splice(index, 1);
+            button.classList.remove('selected');  // Poista 'selected'-luokka painikkeesta
+        }
+    }
 
-function submitSurvey() {
-// Tähän voit lisätä koodin, joka käsittelee kyselyn lähettämisen.
-closeSurveyModal();
-}
+
+    function openSurveyModal() {
+        document.getElementById("surveyModal").style.display = "block";
+    }
+
+    function closeSurveyModal() {
+        document.getElementById("surveyModal").style.display = "none";
+    }
+
+    function showQuestion(questionNumber) {
+        // Piilota kaikki kysymykset
+        var questions = document.getElementsByClassName("survey-question");
+        for (var i = 0; i < questions.length; i++) {
+            questions[i].style.display = "none";
+        }
+
+        // Näytä valittu kysymys
+        document.getElementById("surveyQuestion" + questionNumber).style.display = "block";
+
+        // Jos ollaan viimeisessä kysymyksessä, näytä lähetä-painike
+        if (questionNumber === questions.length) {
+            document.getElementById("submitSurvey").style.display = "block";
+        }
+    }
+
+    function submitSurvey() {
+        // Tähän voit lisätä koodin, joka käsittelee kyselyn lähettämisen.
+        closeSurveyModal();
+    }
 </script>
 
-
+</body>
 </html>
+
