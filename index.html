@@ -120,16 +120,31 @@ session_start();
                     this.labels = labels;
                     this.data = data;
                     this.yLabel = yLabel;
+                    var yearlyConsumption = 0; // Alustetaan vuosikulutus nollaksi
                     for (var i = 1; i < rows.length; i++) {
                         var cells = rows[i].split(";");
                         if (cells.length > 1) {
                             var date = new Date(cells[5].slice(0, -1));
                             var formattedDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " klo " + date.getHours() + "." + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
                             labels.push(formattedDate);
-                            data.push(parseFloat(cells[6].replace(",", ".")));
-                            yLabel = cells[3] ;
+                            var consumption = parseFloat(cells[6].replace(",", "."));
+                            data.push(consumption);
+                            yLabel = cells[3];
+                            yearlyConsumption += consumption; // Lisätään kulutus vuosikulutukseen
                         }
                     }
+                    yearlyConsumption *= 24 * 365 / data.length; // Karkea arvio vuosikulutuksesta saatavilla olevan datan perusteella
+                    var apartmentType;
+                    if (yearlyConsumption >= 1000 && yearlyConsumption < 1800) {
+                        apartmentType = "yksiö";
+                    } else if (yearlyConsumption >= 1800 && yearlyConsumption < 2200) {
+                        apartmentType = "kaksio";
+                    } else if (yearlyConsumption >= 2200 && yearlyConsumption < 2800) {
+                        apartmentType = "kolmio";
+                    } else {
+                        apartmentType = "jokin muu";
+                    }
+
                     var ctx = document.getElementById("myChart").getContext("2d");
                     myChart = new Chart(ctx, {
                         type: "line",
@@ -188,7 +203,8 @@ session_start();
                             plugins: {
                                 title: {
                                     display: true,
-                                    text: 'Kaavion otsikko',
+                                    text: ' Arvio vuosikulutuksesta: ' + yearlyConsumption.toFixed(2) +"kWh" + " " + apartmentType,
+
                                     font: {
                                         family: 'Gopher',
                                         weight: 'bold',
@@ -210,6 +226,8 @@ session_start();
                             }
                         }
                     });
+
+
                     // Painikkeet näkyviin vasta kaavion muodostumisen jälkeen
                     document.getElementById("buttonContainer").classList.remove("hidden");
                     // Näytä kyselyn kehotus ja painike
@@ -306,8 +324,22 @@ session_start();
         });
     }
     document.getElementById("filterButton2").addEventListener("click", updateFilteredChart2);
+    function calculateYearlyConsumption(data) {
+        // Lasketaan käytettävissä olevien tuntien määrä
+        var availableHours = data.length;
+
+        // Oletetaan, että vuodessa on 8760 tuntia (365 päivää x 24 tuntia)
+        var totalHoursInYear = 8760;
+
+        // Lasketaan karkea odotettu vuosikulutus
+        var yearlyConsumption = (data.reduce((a, b) => a + b, 0) / availableHours) * totalHoursInYear;
+
+        // Palautetaan vuosikulutus
+        return yearlyConsumption;
+    }
 
 </script>
+
 
 
 <input type="file" id="fileUpload" />
