@@ -210,7 +210,11 @@ session_start();
                             }
                         }
                     });
+                    // Painikkeet näkyviin vasta kaavion muodostumisen jälkeen
                     document.getElementById("buttonContainer").classList.remove("hidden");
+                    // Näytä kyselyn kehotus ja painike
+                    document.getElementById("surveyPrompt").style.display = "block";
+                    document.getElementById("surveyButton").style.display = "block";
                 };
                 reader.readAsText(fileUpload.files[0]);
             }  else {
@@ -318,7 +322,36 @@ session_start();
 </div>
 
 
+<div id="surveyModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeSurveyModal()">&times;</span>
+        <h2>Kysely</h2>
+        <!-- Tähän voit lisätä kyselyn kysymykset. -->
+        <p>Kysymys 1</p>
+        <p>Kysymys 2</p>
+        <p>Kysymys 3</p>
+        <!-- Lisää painike, jolla käyttäjä voi lähettää kyselyn -->
+        <button onclick="submitSurvey()">Lähetä</button>
+    </div>
+</div>
 
+<p id="surveyPrompt" style="display: none;">Vastaa kyselyyn, jotta saat enemmän tietoa kulutuksestasi.</p>
+<button id="surveyButton" class="button button2" onclick="openSurveyModal()" style="display: none;">Vastaa kyselyyn</button>
+
+<script>
+function openSurveyModal() {
+document.getElementById("surveyModal").style.display = "block";
+}
+
+function closeSurveyModal() {
+document.getElementById("surveyModal").style.display = "none";
+}
+
+function submitSurvey() {
+// Tähän voit lisätä koodin, joka käsittelee kyselyn lähettämisen.
+closeSurveyModal();
+}
+</script>
 
 </body>
 </html>
