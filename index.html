@@ -355,7 +355,20 @@ session_start();
     <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
     <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
     <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
+
 </div>
+    <div id="saa-container">
+    <button id="import-btn" class="button button2">Näytä säätiedot</button>
+    </div>
+    <script>
+        const importBtn = document.getElementById("import-btn");
+
+        importBtn.addEventListener("click", function() {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "säätiedot.php");
+            xhr.send();
+        });
+    </script>
 </div>
 
 
