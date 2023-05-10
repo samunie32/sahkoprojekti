@@ -160,7 +160,7 @@ session_start();
                                     hoverRadius:5,
                                     pointBackgroundColor: "rgb(49,41,54)",
                                     pointBorderColor: "rgb(49,41,54)",
-                                    fill: true
+                                    fill: false
 
                                 }
                             ]
@@ -302,7 +302,6 @@ session_start();
     function updateFilteredChart2() {
         // Laske noin 70% kulutus
         var avgConsumption = data.reduce((a, b) => a + b, 0) / data.length;
-
         var filteredData = [];
         var filteredLabels = [];
 
@@ -380,19 +379,19 @@ session_start();
         <div id="surveyQuestion1" class="survey-question">
             <p>Mikä on asumismuotosi:</p>
             <div class="answer-container">
-                <button id="survey-answer" class="button button2" onclick="showQuestion(2)">Rivitalo</button>
-                <button id="survey-answer" class="button button2" onclick="showQuestion(2)">Kerrostalo</button>
-                <button id="survey-answer" class="button button2" onclick="showQuestion(2)">Omakotitalo</button>
+                <button id="survey-answer1" class="button button2" onclick="showQuestion(2)">Rivitalo</button>
+                <button id="survey-answer2" class="button button2" onclick="showQuestion(2)">Kerrostalo</button>
+                <button id="survey-answer3" class="button button2" onclick="showQuestion(2)">Omakotitalo</button>
             </div>
         </div>
         <div id="surveyQuestion2" class="survey-question" style="display: none;">
             <p>Asunnon pinta-ala:</p>
             <div class="answer-container">
-                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">0-30</button>
-                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">31-50</button>
-                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">51-70</button>
-                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">71-100</button>
-                <button id="survey-answer" class="button button2" onclick="showQuestion(3)">101-200</button>
+                <button id="survey-answer4" class="button button2" onclick="showQuestion(3)">0-30</button>
+                <button id="survey-answer5" class="button button2" onclick="showQuestion(3)">31-50</button>
+                <button id="survey-answer6" class="button button2" onclick="showQuestion(3)">51-70</button>
+                <button id="survey-answer7" class="button button2" onclick="showQuestion(3)">71-100</button>
+                <button id="survey-answer8" class="button button2" onclick="showQuestion(3)">101-200</button>
             </div>
         </div>
         <div id="surveyQuestion3" class="survey-question" style="display: none;">
