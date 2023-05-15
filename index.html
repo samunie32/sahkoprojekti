@@ -41,6 +41,7 @@ session_start();
 </style>
 </head>
 <body>
+
 <ul class="navbar">
     <li>
         <a class="nav-link" href=index.html >Sähkölisko</a></li>
@@ -134,7 +135,7 @@ session_start();
                     }
                     yearlyConsumption *= 24 * 365 / data.length; // Karkea arvio vuosikulutuksesta saatavilla olevan datan perusteella
                     var apartmentType;
-                    if (yearlyConsumption >= 1000 && yearlyConsumption < 1800) {
+                    if (yearlyConsumption >= 800 && yearlyConsumption < 1800) {
                         apartmentType = "yksiö";
                     } else if (yearlyConsumption >= 1800 && yearlyConsumption < 2200) {
                         apartmentType = "kaksio";
