@@ -144,6 +144,14 @@ session_start();
                         apartmentType = "jokin muu";
                     }
 
+                    function calculateBaseConsumption(data) {
+                        // Laske noin 70% kulutus
+                        var avgConsumption = data.reduce((a, b) => a + b, 0) / data.length;
+
+                        // Palautetaan pohjakulutus
+                        return avgConsumption;
+                    }
+
                     var ctx = document.getElementById("myChart").getContext("2d");
                     myChart = new Chart(ctx, {
                         type: "bar",
@@ -153,6 +161,7 @@ session_start();
                                 {
                                     label: "Kulutus (" + yLabel + ")",
                                     data: data,
+                                    type: 'bar',
                                     borderColor: "rgb(49,41,54, 0.5)",
                                     backgroundColor: "rgb(49,41,54, 0.2)",
                                     borderWidth: 2,
@@ -161,10 +170,20 @@ session_start();
                                     pointBackgroundColor: "rgb(49,41,54)",
                                     pointBorderColor: "rgb(49,41,54)",
                                     fill: false
-
+                                },
+                                {
+                                    label: "Pohjakulutus",
+                                    data: Array(labels.length).fill(calculateBaseConsumption(data)),
+                                    type: 'line',
+                                    borderColor: "rgb(255,0,0, 0.5)",
+                                    backgroundColor: "rgba(0,0,0,0)",
+                                    borderWidth: 1,
+                                    pointRadius: 0,
+                                    fill: false
                                 }
                             ]
                         },
+
                         options: {
                             scales: {
                                 y: {
