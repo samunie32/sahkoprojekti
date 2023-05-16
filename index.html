@@ -226,7 +226,7 @@ session_start();
                                     type: 'line',
                                     borderColor: "rgb(255,0,0, 0.5)",
                                     backgroundColor: "rgba(0,0,0,0)",
-                                    borderWidth: 1,
+                                    borderWidth: 2,
                                     pointRadius: 0,
                                     fill: false
                                 }
@@ -301,6 +301,7 @@ session_start();
                     document.getElementById("surveyPrompt").style.display = "block";
                     document.getElementById("surveyButton").style.display = "block";
                     document.getElementById("sidebar").style.display = "block";
+                    document.getElementById("sidebar2").style.display = "block";
                 };
                 reader.readAsText(fileUpload.files[0]);
             }  else {
@@ -415,21 +416,33 @@ session_start();
 <button class="button button2" onclick="Upload()">Lataa tiedosto</button>
 </div>
 
-<div id="monthPicker">
-    <button id="prevMonth" class="button button2">&#60;</button>
-    <span id="currentMonth"></span>
-    <button id="nextMonth" class="button button2">&#62;</button>
+<div class=sidebar id="sidebar">
+    <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
+    <p>Kylmälaitteet: 430kWh</p>
+    <p>Kodin elektroniikka: 390kWh </p>
+    <p>Ruoan valmistus ja astianpesu: 250kWh </p>
+    <p>Valaistus: 170kWh</p>
+    <p>Pyykinpesu: 80kWh</p>
+    <p>Muu: 80kWh</p>
 </div>
+
+<div style="clear:both"></div> <!-- Lisätty clear:both, jotta uusi rivit alkavat oikein -->
 
 <div class="container2">
     <div id="dvCSV"></div>
     <canvas id="myChart" width="650" height="450"></canvas>
-    <div class="button-container hidden" id="buttonContainer">
+    <div class="button-container hidden" id="buttonContainer"></div>
+</div>
+
+<div class="sidebar2" id="sidebar2">
     <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
     <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
     <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
-
-</div>
+    <div id="monthPicker">
+        <button id="prevMonth" class="button button2">&#60;</button>
+        <span id="currentMonth"></span>
+        <button id="nextMonth" class="button button2">&#62;</button>
+    </div>
     <div id="saa-container">
     <button id="import-btn" class="button button2">Näytä säätiedot</button>
     </div>
@@ -444,19 +457,7 @@ session_start();
     </script>
 </div>
 
-
-<div id="sidebar" style="display: none;">
-    <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
-    <p>Kylmälaitteet: 430kWh</p>
-    <p>Kodin elektroniikka: 390kWh </p>
-    <p>Ruoan valmistus ja astianpesu: 250kWh </p>
-    <p>Valaistus: 170kWh</p>
-    <p>Pyykinpesu: 80kWh</p>
-    <p>Muu: 80kWh</p>
-
-</div>
-
-</div>
+<div style="clear:both"></div>
 
 <div id="surveyModal" class="modal">
     <div class="modal-content">
