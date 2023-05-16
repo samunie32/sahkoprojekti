@@ -457,10 +457,20 @@ session_start();
     <div class="button-container hidden" id="buttonContainer"></div>
 </div>
 
+<div id="calculation-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCalculationModal()">&times;</span>
+        <h2>Laskentatapa</h2>
+        <!-- Lisää tässä muu modaalin sisältö -->
+    </div>
+</div>
+
+
 <div class="sidebar2" id="sidebar2">
     <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
     <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
     <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
+    <button id="calculation-btn" class="button button2" onclick="openCalculationModal()">Laskentatapa</button>
     <div id="monthPicker">
         <button id="prevMonth" class="button button2">&#60;</button>
         <span id="currentMonth"></span>
@@ -479,6 +489,18 @@ session_start();
         });
     </script>
 </div>
+
+<script>
+    function openCalculationModal() {
+        document.getElementById("calculation-modal").style.display = "block";
+    }
+
+    function closeCalculationModal() {
+        document.getElementById("calculation-modal").style.display = "none";
+    }
+
+</script>
+
 
 <div style="clear:both"></div>
 
