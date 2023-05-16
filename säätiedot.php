@@ -24,18 +24,33 @@ $response = file_get_contents($base_url . '&' . http_build_query($params));
 
 $data = json_decode($response, true);
 
+$weatherData = array();
+
 foreach ($data["features"] as $feature) {
     $properties = $feature["properties"];
     $timestamp = $properties["time"];
-    $temperature = $properties["temperature"];
-    $wind_speed = $properties["windspeedms"];
-    $precipitation = $properties["precipitation1h"];
+    $lampotila = $properties["lampotila"];
+    $tuulennopeus = $properties["tuulennopeus"];
+    $sademaara = $properties["sademaara"];
 
-    $add_data = "INSERT INTO saatiedot (timestamp, temperature, wind_speed, precipitation)
-                VALUES ('$timestamp', '$temperature', '$wind_speed', '$precipitation')";
+    $add_data = "INSERT INTO saatiedot (timestamp, lampotila, tuulennopeus, sademara)
+                VALUES ('$timestamp', '$lampotila', '$tuulennopeus', '$sademaara')";
 
     mysqli_query($conn, $add_data);
+
+    // Lisää säätiedot taulukkoon
+    $weatherData[] = array(
+        "timestamp" => $timestamp,
+        "lampotila" => $lampotila,
+        "tuulennopeus" => $tuulennopeus,
+        "sademaara" => $sademaara
+    );
 }
 
 // Close database connection
 mysqli_close($conn);
+
+// Palauta säätiedot JSON-muodossa
+header('Content-Type: application/json');
+echo json_encode($weatherData);
+?>
