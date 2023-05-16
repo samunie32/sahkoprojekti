@@ -102,14 +102,16 @@ session_start();
     }
 </script>
 
-<script>
-    var data = [];
-    var labels = [];
-    var yLabel = "";
-    var currentMonth = new Date();  // aluksi nykyinen kuukausi
-    var updateMonthlyChart;
 
-    function Upload() {
+    <script>
+        var data = [];
+        var labels = [];
+        var yLabel = "";
+        var myChart;
+    var currentMonth = new Date();  // aluksi nykyinen kuukausi
+
+
+        function Upload() {
         var fileUpload = document.getElementById("fileUpload");
         var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
         if (regex.test(fileUpload.value.toLowerCase())) {
@@ -117,9 +119,11 @@ session_start();
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     var rows = e.target.result.split("\n");
-                    this.labels = labels;
-                    this.data = data;
-                    this.yLabel = yLabel;
+                    labels = window.labels;
+                    data = window.data;
+                    yLabel = window.yLabel;
+
+
                     var yearlyConsumption = 0; // Alustetaan vuosikulutus nollaksi
                     for (var i = 1; i < rows.length; i++) {
                         var cells = rows[i].split(";");
@@ -162,44 +166,12 @@ session_start();
                         monthPicker.textContent = monthNames[currentMonth.getMonth()] + " " + currentMonth.getFullYear();
                     }
 
-                    document.getElementById("prevMonth").addEventListener("click", function() {
-                        currentMonth.setMonth(currentMonth.getMonth() - 1);
-                        updateMonthPicker();
-                        updateMonthlyChart();  // päivitä kuukausittaisen kulutuksen kaavio
-                    });
 
-                    document.getElementById("nextMonth").addEventListener("click", function() {
-                        currentMonth.setMonth(currentMonth.getMonth() + 1);
-                        updateMonthPicker();
-                        updateMonthlyChart();  // päivitä kuukausittaisen kulutuksen kaavio
-                    });
 
-                    updateMonthPicker();  // asettaa kuukaudenvalitsimen nykyiseen kuukauteen
+                     // asettaa kuukaudenvalitsimen nykyiseen kuukauteen
 
-                    function updateMonthlyChart() {
-                        var monthlyData = [];
-                        var monthlyLabels = [];
 
-                        for (var i = 0; i < data.length; i++) {
-                            var dataDate = new Date(labels[i]);
 
-                            // Tarkistetaan, että päivämäärän kuukausi ja vuosi vastaavat valittua kuukautta
-                            if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
-                                monthlyData.push(data[i]);
-                                monthlyLabels.push(labels[i]);
-                            }
-                        }
-
-                        var ctx = document.getElementById("myChart").getContext("2d");
-                        myChart.data.labels = monthlyLabels;
-                        myChart.data.datasets[0].data = monthlyData;
-                        myChart.update({
-                            animation: {
-                                duration: 1000,
-                                easing: 'easeInOutBounce'
-                            }
-                        });
-                    }
 
                     var ctx = document.getElementById("myChart").getContext("2d");
                     myChart = new Chart(ctx, {
@@ -293,7 +265,56 @@ session_start();
                             }
                         }
                     });
+                    updateMonthPicker();
 
+                    function updateMonthlyChart() {
+                        var monthlyData = [];
+                        var monthlyLabels = [];
+
+                        for (var i = 0; i < labels.length; i++) {
+                            var dataDate = new Date(labels[i]);
+
+                            // Check if the date's month and year match the selected month
+                            if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
+                                monthlyData.push(data[i]); // Push consumption data to monthlyData
+                                monthlyLabels.push(labels[i]); // Push labels to monthlyLabels
+                            }
+                        }
+                        console.log("Monthly Data:", monthlyData);
+                        console.log("Monthly Labels:", monthlyLabels);
+                        console.log('dataDate:', dataDate);
+                        console.log('currentMonth:', currentMonth);
+                        // Tulostaa data-taulukon sisällön
+
+// Tulostaa labels-taulukon sisällön
+
+// Tarkistaa data- ja labels-taulukoiden yhteensopivuuden
+
+
+                        // Check if there is no data available for the selected month
+                        if (monthlyData.length === 0) {
+                            // You can handle this case by displaying a message or taking appropriate action
+                            console.log("No data available for the selected month.");
+                        }
+
+                        // Update the chart with the monthly data
+                        myChart.data.labels = monthlyLabels;
+                        myChart.data.datasets[0].data = monthlyData;
+                        myChart.update();
+                    }
+
+// ...
+                    document.getElementById("prevMonth").addEventListener("click", function () {
+                        currentMonth.setMonth(currentMonth.getMonth() - 1);
+                        updateMonthPicker();
+                        updateMonthlyChart(); // päivitä kuukausittaisen kulutuksen kaavio
+                    });
+
+                    document.getElementById("nextMonth").addEventListener("click", function () {
+                        currentMonth.setMonth(currentMonth.getMonth() + 1);
+                        updateMonthPicker();
+                        updateMonthlyChart(); // päivitä kuukausittaisen kulutuksen kaavio
+                    });
 
                     // Painikkeet näkyviin vasta kaavion muodostumisen jälkeen
                     document.getElementById("buttonContainer").classList.remove("hidden");
@@ -310,7 +331,9 @@ session_start();
             alert("Please upload a valid CSV file.");
         }
     }
+
     document.getElementById("fileUpload").addEventListener("change", Upload);
+
     function updateFilteredChart() {
         // Laske suurin 15% kulutus
         var maxConsumption = Math.max(...data) * 0.3;
