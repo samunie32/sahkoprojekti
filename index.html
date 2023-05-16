@@ -106,7 +106,8 @@ session_start();
     var data = [];
     var labels = [];
     var yLabel = "";
-
+    var currentMonth = new Date();  // aluksi nykyinen kuukausi
+    var updateMonthlyChart;
 
     function Upload() {
         var fileUpload = document.getElementById("fileUpload");
@@ -150,6 +151,54 @@ session_start();
 
                         // Palautetaan pohjakulutus
                         return avgConsumption;
+                    }
+
+                    function updateMonthPicker() {
+                        var monthNames = ["Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kesäkuu",
+                            "Heinäkuu", "Elokuu", "Syyskuu", "Lokakuu", "Marraskuu", "Joulukuu"
+                        ];
+
+                        var monthPicker = document.getElementById("currentMonth");
+                        monthPicker.textContent = monthNames[currentMonth.getMonth()] + " " + currentMonth.getFullYear();
+                    }
+
+                    document.getElementById("prevMonth").addEventListener("click", function() {
+                        currentMonth.setMonth(currentMonth.getMonth() - 1);
+                        updateMonthPicker();
+                        updateMonthlyChart();  // päivitä kuukausittaisen kulutuksen kaavio
+                    });
+
+                    document.getElementById("nextMonth").addEventListener("click", function() {
+                        currentMonth.setMonth(currentMonth.getMonth() + 1);
+                        updateMonthPicker();
+                        updateMonthlyChart();  // päivitä kuukausittaisen kulutuksen kaavio
+                    });
+
+                    updateMonthPicker();  // asettaa kuukaudenvalitsimen nykyiseen kuukauteen
+
+                    function updateMonthlyChart() {
+                        var monthlyData = [];
+                        var monthlyLabels = [];
+
+                        for (var i = 0; i < data.length; i++) {
+                            var dataDate = new Date(labels[i]);
+
+                            // Tarkistetaan, että päivämäärän kuukausi ja vuosi vastaavat valittua kuukautta
+                            if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
+                                monthlyData.push(data[i]);
+                                monthlyLabels.push(labels[i]);
+                            }
+                        }
+
+                        var ctx = document.getElementById("myChart").getContext("2d");
+                        myChart.data.labels = monthlyLabels;
+                        myChart.data.datasets[0].data = monthlyData;
+                        myChart.update({
+                            animation: {
+                                duration: 1000,
+                                easing: 'easeInOutBounce'
+                            }
+                        });
                     }
 
                     var ctx = document.getElementById("myChart").getContext("2d");
@@ -366,6 +415,11 @@ session_start();
 <button class="button button2" onclick="Upload()">Lataa tiedosto</button>
 </div>
 
+<div id="monthPicker">
+    <button id="prevMonth" class="button button2">&#60;</button>
+    <span id="currentMonth"></span>
+    <button id="nextMonth" class="button button2">&#62;</button>
+</div>
 
 <div class="container2">
     <div id="dvCSV"></div>
