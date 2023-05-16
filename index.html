@@ -106,7 +106,8 @@ session_start();
     var data = [];
     var labels = [];
     var yLabel = "";
-
+    var currentMonth = new Date();  // aluksi nykyinen kuukausi
+    var updateMonthlyChart;
 
     function Upload() {
         var fileUpload = document.getElementById("fileUpload");
@@ -151,7 +152,6 @@ session_start();
                         // Palautetaan pohjakulutus
                         return avgConsumption;
                     }
-                    var currentMonth = new Date();  // aluksi nykyinen kuukausi
 
                     function updateMonthPicker() {
                         var monthNames = ["Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kesäkuu",
@@ -175,6 +175,31 @@ session_start();
                     });
 
                     updateMonthPicker();  // asettaa kuukaudenvalitsimen nykyiseen kuukauteen
+
+                    function updateMonthlyChart() {
+                        var monthlyData = [];
+                        var monthlyLabels = [];
+
+                        for (var i = 0; i < data.length; i++) {
+                            var dataDate = new Date(labels[i]);
+
+                            // Tarkistetaan, että päivämäärän kuukausi ja vuosi vastaavat valittua kuukautta
+                            if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
+                                monthlyData.push(data[i]);
+                                monthlyLabels.push(labels[i]);
+                            }
+                        }
+
+                        var ctx = document.getElementById("myChart").getContext("2d");
+                        myChart.data.labels = monthlyLabels;
+                        myChart.data.datasets[0].data = monthlyData;
+                        myChart.update({
+                            animation: {
+                                duration: 1000,
+                                easing: 'easeInOutBounce'
+                            }
+                        });
+                    }
 
                     var ctx = document.getElementById("myChart").getContext("2d");
                     myChart = new Chart(ctx, {
@@ -381,32 +406,6 @@ session_start();
         // Palautetaan vuosikulutus
         return yearlyConsumption;
     }
-
-    function updateMonthlyChart() {
-        var monthlyData = [];
-        var monthlyLabels = [];
-
-        for (var i = 0; i < data.length; i++) {
-            var dataDate = new Date(labels[i]);
-
-            // Tarkistetaan, että päivämäärän kuukausi ja vuosi vastaavat valittua kuukautta
-            if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
-                monthlyData.push(data[i]);
-                monthlyLabels.push(labels[i]);
-            }
-        }
-
-        var ctx = document.getElementById("myChart").getContext("2d");
-        myChart.data.labels = monthlyLabels;
-        myChart.data.datasets[0].data = monthlyData;
-        myChart.update({
-            animation: {
-                duration: 1000,
-                easing: 'easeInOutBounce'
-            }
-        });
-    }
-
 
 </script>
 
