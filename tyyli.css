@@ -64,12 +64,11 @@ h1, h2, h4, h5, h6 {
     font-style: normal;
 }
 
-.button-container {
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-
-}
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Muutettu "right" -> "flex-end" */
+        gap: 10px;
+    }
 
 .hidden {
     display: none;
@@ -152,22 +151,36 @@ li a:hover {
 }
 
 .container1 {
-    width: 100%;
-    float: left;
-}
-
-.container2 {
     width: 60%;
     float: left;
-    margin-right: 5%;
-    margin-bottom: 10%;
 }
-
-
 .sidebar {
-    width: 40%;
-    display: none; /* Aluksi sivupalkki on piilossa */
+    width: 35%;
+    float: right;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
 }
+.container2 {
+    width: 80%;
+    float: left;
+    padding-top: 2%;
+
+}
+
+.sidebar2 {
+    width: 15%;
+    float: right;
+    display: none;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    padding-left: 5%;
+    padding-top: 10%
+
+}
+
 
 
     .answer-container {
@@ -175,6 +188,7 @@ li a:hover {
         justify-content: space-between;
         gap: 10px;
         flex-wrap: wrap;
+        overflow: auto;
     }
     .button.selected {
         background-color: #007BFF;

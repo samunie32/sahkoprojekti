@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<html lang="en"></html>
+<head>
+    <title>CSV-kaavio</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
+</head>
+<body>
+
+<input type="file" id="fileUpload" />
+<button class="button button2" onclick="Upload()">Lataa tiedosto</button>
+</div>
+
+<script>
+    function Upload() {
+        var fileUpload = document.getElementById("fileUpload");
+        var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
+        if (regex.test(fileUpload.value.toLowerCase())) {
+            if (typeof FileReader != "undefined") {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    var rows = e.target.result.split("\n");
+                    var labels = [];
+                    var data = [];
+                    var yLabel = "";
+                    var prices = [];
+                    for (var i = 1; i < rows.length; i++) {
+                        var cells = rows[i].split(",");
+                        if (cells.length > 1) {
+                            var date = new Date(cells[0].replace(/"/g, ""));
+                            var formattedDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear() + " klo " + date.getHours() + "." + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+                            labels.push(formattedDate);
+                            data.push(parseFloat(cells[4].replace(/"/g, "")));
+                            yLabel = cells[4].replace(/"/g, "");
+                            prices.push(parseFloat(cells[4].replace(/"/g, "")));
+                        }
+                    }
+                    var ctx = document.getElementById("myChart").getContext("2d");
+                    var myChart = new Chart(ctx, {
+                        type: "line",
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: "Kulutus (" + yLabel + ")",
+                                    data: data,
+                                    borderColor: "blue",
+                                    backgroundColor: "rgba(75,192,192,0.2)",
+                                    borderWidth: 2,
+                                    pointRadius: 3,
+                                    pointBackgroundColor: "blue",
+                                    pointBorderColor: "blue",
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: yLabel
+                                    },
+                                    beginAtZero: true
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Aika'
+                                    }
+                                }
+                            },
+                            plugins: {
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            var index = context.dataIndex;
+                                            return context.dataset.label + ": " + context.dataset.data[index] + " (" + prices[index] + ")";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                };
+                reader.readAsText(fileUpload.files[0]);
+            } else {
+                alert("This browser does not support HTML5.");
+            }
+        } else {
+            alert("Please upload a valid CSV file.");
+        }
+    }
+    document.getElementById("fileUpload").addEventListener("change", Upload);
+</script>
+
+<div style="width: 600px; height: 400px;">
+    <canvas id="chart"></canvas>
+</div>
+</body>
+</html>
