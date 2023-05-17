@@ -102,16 +102,13 @@ session_start();
     }
 </script>
 
-
-    <script>
-        var data = [];
-        var labels = [];
-        var yLabel = "";
-        var myChart;
-    var currentMonth = new Date();  // aluksi nykyinen kuukausi
+<script>
+    var data = [];
+    var labels = [];
+    var yLabel = "";
 
 
-        function Upload() {
+    function Upload() {
         var fileUpload = document.getElementById("fileUpload");
         var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.csv|.txt)$/;
         if (regex.test(fileUpload.value.toLowerCase())) {
@@ -119,11 +116,9 @@ session_start();
                 var reader = new FileReader();
                 reader.onload = function(e) {
                     var rows = e.target.result.split("\n");
-                    labels = window.labels;
-                    data = window.data;
-                    yLabel = window.yLabel;
-
-
+                    this.labels = labels;
+                    this.data = data;
+                    this.yLabel = yLabel;
                     var yearlyConsumption = 0; // Alustetaan vuosikulutus nollaksi
                     for (var i = 1; i < rows.length; i++) {
                         var cells = rows[i].split(";");
@@ -157,22 +152,6 @@ session_start();
                         return avgConsumption;
                     }
 
-                    function updateMonthPicker() {
-                        var monthNames = ["Tammikuu", "Helmikuu", "Maaliskuu", "Huhtikuu", "Toukokuu", "Kesäkuu",
-                            "Heinäkuu", "Elokuu", "Syyskuu", "Lokakuu", "Marraskuu", "Joulukuu"
-                        ];
-
-                        var monthPicker = document.getElementById("currentMonth");
-                        monthPicker.textContent = monthNames[currentMonth.getMonth()] + " " + currentMonth.getFullYear();
-                    }
-
-
-
-                     // asettaa kuukaudenvalitsimen nykyiseen kuukauteen
-
-
-
-
                     var ctx = document.getElementById("myChart").getContext("2d");
                     myChart = new Chart(ctx, {
                         type: "bar",
@@ -198,7 +177,7 @@ session_start();
                                     type: 'line',
                                     borderColor: "rgb(255,0,0, 0.5)",
                                     backgroundColor: "rgba(0,0,0,0)",
-                                    borderWidth: 2,
+                                    borderWidth: 1,
                                     pointRadius: 0,
                                     fill: false
                                 }
@@ -265,56 +244,7 @@ session_start();
                             }
                         }
                     });
-                    updateMonthPicker();
 
-                    function updateMonthlyChart() {
-                        var monthlyData = [];
-                        var monthlyLabels = [];
-
-                        for (var i = 0; i < labels.length; i++) {
-                            var dataDate = new Date(labels[i]);
-
-                            // Check if the date's month and year match the selected month
-                            if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
-                                monthlyData.push(data[i]); // Push consumption data to monthlyData
-                                monthlyLabels.push(labels[i]); // Push labels to monthlyLabels
-                            }
-                        }
-                        console.log("Monthly Data:", monthlyData);
-                        console.log("Monthly Labels:", monthlyLabels);
-                        console.log('dataDate:', dataDate);
-                        console.log('currentMonth:', currentMonth);
-                        // Tulostaa data-taulukon sisällön
-
-// Tulostaa labels-taulukon sisällön
-
-// Tarkistaa data- ja labels-taulukoiden yhteensopivuuden
-
-
-                        // Check if there is no data available for the selected month
-                        if (monthlyData.length === 0) {
-                            // You can handle this case by displaying a message or taking appropriate action
-                            console.log("No data available for the selected month.");
-                        }
-
-                        // Update the chart with the monthly data
-                        myChart.data.labels = monthlyLabels;
-                        myChart.data.datasets[0].data = monthlyData;
-                        myChart.update();
-                    }
-
-// ...
-                    document.getElementById("prevMonth").addEventListener("click", function () {
-                        currentMonth.setMonth(currentMonth.getMonth() - 1);
-                        updateMonthPicker();
-                        updateMonthlyChart(); // päivitä kuukausittaisen kulutuksen kaavio
-                    });
-
-                    document.getElementById("nextMonth").addEventListener("click", function () {
-                        currentMonth.setMonth(currentMonth.getMonth() + 1);
-                        updateMonthPicker();
-                        updateMonthlyChart(); // päivitä kuukausittaisen kulutuksen kaavio
-                    });
 
                     // Painikkeet näkyviin vasta kaavion muodostumisen jälkeen
                     document.getElementById("buttonContainer").classList.remove("hidden");
@@ -322,7 +252,6 @@ session_start();
                     document.getElementById("surveyPrompt").style.display = "block";
                     document.getElementById("surveyButton").style.display = "block";
                     document.getElementById("sidebar").style.display = "block";
-                    document.getElementById("sidebar2").style.display = "block";
                 };
                 reader.readAsText(fileUpload.files[0]);
             }  else {
@@ -332,9 +261,7 @@ session_start();
             alert("Please upload a valid CSV file.");
         }
     }
-
     document.getElementById("fileUpload").addEventListener("change", Upload);
-
     function updateFilteredChart() {
         // Laske suurin 15% kulutus
         var maxConsumption = Math.max(...data) * 0.3;
@@ -439,43 +366,31 @@ session_start();
 <button class="button button2" onclick="Upload()">Lataa tiedosto</button>
 </div>
 
-<div class=sidebar id="sidebar">
-    <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
-    <p>Kylmälaitteet: 430kWh</p>
-    <p>Kodin elektroniikka: 390kWh </p>
-    <p>Ruoan valmistus ja astianpesu: 250kWh </p>
-    <p>Valaistus: 170kWh</p>
-    <p>Pyykinpesu: 80kWh</p>
-    <p>Muu: 80kWh</p>
-</div>
-
-<div style="clear:both"></div> <!-- Lisätty clear:both, jotta uusi rivit alkavat oikein -->
 
 <div class="container2">
     <div id="dvCSV"></div>
     <canvas id="myChart" width="650" height="450"></canvas>
+<<<<<<< HEAD
+    <div class="button-container hidden" id="buttonContainer">
+    <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
+    <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
+    <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
+
+</div>
+=======
     <div class="button-container hidden" id="buttonContainer"></div>
 </div>
-
-<div id="calculation-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeCalculationModal()">&times;</span>
-        <h2>Laskentatapa</h2>
-        <!-- Lisää tässä muu modaalin sisältö -->
-    </div>
-</div>
-
 
 <div class="sidebar2" id="sidebar2">
     <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
     <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
     <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
-    <button id="calculation-btn" class="button button2" onclick="openCalculationModal()">Laskentatapa</button>
     <div id="monthPicker">
         <button id="prevMonth" class="button button2">&#60;</button>
         <span id="currentMonth"></span>
         <button id="nextMonth" class="button button2">&#62;</button>
     </div>
+>>>>>>> parent of 9e4d7ab (lisätty laskentatapa painike)
     <div id="saa-container">
     <button id="import-btn" class="button button2">Näytä säätiedot</button>
     </div>
@@ -490,19 +405,23 @@ session_start();
     </script>
 </div>
 
-<script>
-    function openCalculationModal() {
-        document.getElementById("calculation-modal").style.display = "block";
-    }
+<<<<<<< HEAD
 
-    function closeCalculationModal() {
-        document.getElementById("calculation-modal").style.display = "none";
-    }
+<div id="sidebar" style="display: none;">
+    <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
+    <p>Kylmälaitteet: 430kWh</p>
+    <p>Kodin elektroniikka: 390kWh </p>
+    <p>Ruoan valmistus ja astianpesu: 250kWh </p>
+    <p>Valaistus: 170kWh</p>
+    <p>Pyykinpesu: 80kWh</p>
+    <p>Muu: 80kWh</p>
 
-</script>
+</div>
 
-
+</div>
+=======
 <div style="clear:both"></div>
+>>>>>>> parent of 9e4d7ab (lisätty laskentatapa painike)
 
 <div id="surveyModal" class="modal">
     <div class="modal-content">
