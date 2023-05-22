@@ -333,21 +333,22 @@
         document.getElementById("fileUpload").addEventListener("change", Upload);
 
         function updateFilteredChart() {
-            // Laske suurin 15% kulutus
             var maxConsumption = Math.max(...data) * 0.3;
 
             var filteredData = [];
             var filteredLabels = [];
 
             for (var i = 0; i < data.length; i++) {
-                if (data[i] >= maxConsumption) {
+                var dateParts = labels[i].split(" ");
+                var month = parseInt(dateParts[0].split(".")[1]) - 1;
+
+                if (month === currentMonth.getMonth() && data[i] >= maxConsumption) {
                     filteredData.push(data[i]);
                     filteredLabels.push(labels[i]);
                 }
             }
 
-            // Päivitä kaavion data ja labelit
-            var ctx = document.getElementById("myChart").getContext("2d");
+            // Update the chart with the filtered data
             myChart.data.labels = filteredLabels;
             myChart.data.datasets[0].data = filteredData;
             myChart.update({
@@ -358,7 +359,6 @@
             });
         }
 
-
         document.getElementById("filterButton").addEventListener("click", updateFilteredChart);
 
         function updateFilteredChart1() {
@@ -368,14 +368,16 @@
             var filteredLabels = [];
 
             for (var i = 0; i < data.length; i++) {
-                if (data[i] >= maxConsumption) {
+                var dateParts = labels[i].split(" ");
+                var month = parseInt(dateParts[0].split(".")[1]) - 1;
+
+                if (month === currentMonth.getMonth() && data[i] >= maxConsumption) {
                     filteredData.push(data[i]);
                     filteredLabels.push(labels[i]);
                 }
             }
 
-            // Päivitä kaavion data ja labelit
-            var ctx = document.getElementById("myChart").getContext("2d");
+            // Update the chart with the filtered data
             myChart.data.labels = filteredLabels;
             myChart.data.datasets[0].data = filteredData;
             myChart.update({
@@ -389,20 +391,21 @@
         document.getElementById("filterButton1").addEventListener("click", updateFilteredChart1);
 
         function updateFilteredChart2() {
-            // Laske noin 70% kulutus
             var avgConsumption = data.reduce((a, b) => a + b, 0) / data.length;
             var filteredData = [];
             var filteredLabels = [];
 
             for (var i = 0; i < data.length; i++) {
-                if (data[i] <= avgConsumption) {
+                var dateParts = labels[i].split(" ");
+                var month = parseInt(dateParts[0].split(".")[1]) - 1;
+
+                if (month === currentMonth.getMonth() && data[i] <= avgConsumption) {
                     filteredData.push(data[i]);
                     filteredLabels.push(labels[i]);
                 }
             }
 
-            // Päivitä kaavion data ja labelit
-            var ctx = document.getElementById("myChart").getContext("2d");
+            // Update the chart with the filtered data
             myChart.data.labels = filteredLabels;
             myChart.data.datasets[0].data = filteredData;
             myChart.update({
@@ -414,6 +417,7 @@
         }
 
         document.getElementById("filterButton2").addEventListener("click", updateFilteredChart2);
+
         function calculateYearlyConsumption(data) {
             // Lasketaan käytettävissä olevien tuntien määrä
             var availableHours = data.length;
