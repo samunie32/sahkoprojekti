@@ -1,7 +1,4 @@
-<?php
 
-session_start();
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,11 +44,11 @@ session_start();
     <li style="float:right">
         <a onclick="document.getElementById('id01').style.display='block'">Kirjaudu</a></li>
     <li style="float:right">
-        <a class="nav-link" href=rekisteröityminen.html >Rekisteröidy</a></li>
+        <a class="nav-link" href=rekisteröityminen. >Rekisteröidy</a></li>
 </ul>
 
 <div id="id01" class="modal">
-    <form class="modal-content animate" action="kirjautuminen.php" method="post">
+    <form class="modal-content animate" action="kirjautuminen" method="post">
         <div class="imgcontainer">
             <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
         </div>
@@ -71,7 +68,7 @@ session_start();
             </label>
 
             <button class="button button2" type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Peruuta</button>
-            <span class="psw"> <a href="rekisteröityminen.html">Rekisteröidy</a></span>
+            <span class="psw"> <a href="rekisteröityminen.">Rekisteröidy</a></span>
         </div>
     </form>
 </div>
@@ -272,24 +269,23 @@ session_start();
                             var monthlyLabels = [];
 
                             for (var i = 0; i < labels.length; i++) {
-                                var dataDate = new Date(labels[i]);
+                                // Split the date string by the delimiter (assuming it is a space)
+                                var dateParts = labels[i].split(" ");
+
+                                // Extract the day, month, and year from the date string
+                                var day = parseInt(dateParts[0].split(".")[0]);
+                                var month = parseInt(dateParts[0].split(".")[1]) - 1; // Subtract 1 since JavaScript months are zero-based
+                                var year = parseInt(dateParts[0].split(".")[2]);
 
                                 // Check if the date's month and year match the selected month
-                                if (dataDate.getMonth() === currentMonth.getMonth() && dataDate.getFullYear() === currentMonth.getFullYear()) {
+                                if (month === currentMonth.getMonth() && year === currentMonth.getFullYear()) {
                                     monthlyData.push(data[i]); // Push consumption data to monthlyData
                                     monthlyLabels.push(labels[i]); // Push labels to monthlyLabels
                                 }
                             }
+
                             console.log("Monthly Data:", monthlyData);
                             console.log("Monthly Labels:", monthlyLabels);
-                            console.log('dataDate:', dataDate);
-                            console.log('currentMonth:', currentMonth);
-                            // Tulostaa data-taulukon sisällön
-
-// Tulostaa labels-taulukon sisällön
-
-// Tarkistaa data- ja labels-taulukoiden yhteensopivuuden
-
 
                             // Check if there is no data available for the selected month
                             if (monthlyData.length === 0) {
@@ -302,6 +298,7 @@ session_start();
                             myChart.data.datasets[0].data = monthlyData;
                             myChart.update();
                         }
+
 
 // ...
                         document.getElementById("prevMonth").addEventListener("click", function () {
