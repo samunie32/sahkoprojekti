@@ -361,6 +361,41 @@
 
         document.getElementById("filterButton").addEventListener("click", updateFilteredChart);
 
+        function updateFilteredChart() {
+            var maxConsumption = Math.max(...data) * 0.3;
+
+            var filteredData = [];
+            var filteredLabels = [];
+
+            for (var i = 0; i < data.length; i++) {
+                var dateParts = labels[i].split(" ");
+                var day = parseInt(dateParts[0].split(".")[0]);
+                var month = parseInt(dateParts[0].split(".")[1]) - 1;
+                var year = parseInt(dateParts[0].split(".")[2]);
+
+                if (
+                    month === currentMonth.getMonth() &&
+                    year === currentMonth.getFullYear() &&
+                    data[i] >= maxConsumption
+                ) {
+                    filteredData.push(data[i]);
+                    filteredLabels.push(labels[i]);
+                }
+            }
+
+            // Update the chart with the filtered data
+            myChart.data.labels = filteredLabels;
+            myChart.data.datasets[0].data = filteredData;
+            myChart.update({
+                animation: {
+                    duration: 1000,
+                    easing: 'easeInOutBounce'
+                }
+            });
+        }
+
+        document.getElementById("filterButton").addEventListener("click", updateFilteredChart);
+
         function updateFilteredChart1() {
             var maxConsumption = Math.min(...data) * 0;
 
@@ -369,9 +404,15 @@
 
             for (var i = 0; i < data.length; i++) {
                 var dateParts = labels[i].split(" ");
+                var day = parseInt(dateParts[0].split(".")[0]);
                 var month = parseInt(dateParts[0].split(".")[1]) - 1;
+                var year = parseInt(dateParts[0].split(".")[2]);
 
-                if (month === currentMonth.getMonth() && data[i] >= maxConsumption) {
+                if (
+                    month === currentMonth.getMonth() &&
+                    year === currentMonth.getFullYear() &&
+                    data[i] >= maxConsumption
+                ) {
                     filteredData.push(data[i]);
                     filteredLabels.push(labels[i]);
                 }
@@ -397,9 +438,15 @@
 
             for (var i = 0; i < data.length; i++) {
                 var dateParts = labels[i].split(" ");
+                var day = parseInt(dateParts[0].split(".")[0]);
                 var month = parseInt(dateParts[0].split(".")[1]) - 1;
+                var year = parseInt(dateParts[0].split(".")[2]);
 
-                if (month === currentMonth.getMonth() && data[i] <= avgConsumption) {
+                if (
+                    month === currentMonth.getMonth() &&
+                    year === currentMonth.getFullYear() &&
+                    data[i] <= avgConsumption
+                ) {
                     filteredData.push(data[i]);
                     filteredLabels.push(labels[i]);
                 }
@@ -417,6 +464,7 @@
         }
 
         document.getElementById("filterButton2").addEventListener("click", updateFilteredChart2);
+
 
         function calculateYearlyConsumption(data) {
             // Lasketaan käytettävissä olevien tuntien määrä
