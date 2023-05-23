@@ -36,7 +36,7 @@
 /* Tyyli sulje napille, kun hiiri on sen päällä */
 .close:hover,
 .close:focus {
-    color: #ecc9ee;
+    color: rgb(236, 197, 197);
     text-decoration: none;
     cursor: pointer;
 }
@@ -147,28 +147,30 @@ li a {
 }
 
 li a:hover {
-    color: #ecc9ee;
+    color: rgb(236, 197, 197);
 }
 
 .container1 {
     width: 60%;
     float: left;
+    margin-right: 5%;
 }
+
 .sidebar {
     width: 35%;
     float: right;
     display: none;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
+
 }
-.container2 {
+
+
+
+.container3 {
     width: 80%;
     float: left;
     padding-top: 2%;
 
 }
-
 .sidebar2 {
     width: 15%;
     float: right;
@@ -181,16 +183,41 @@ li a:hover {
 
 }
 
+.answer-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    overflow: auto;
+}
+
+.button.selected {
+    background-color: #007BFF;
+    color: white;
+}
+
+.bar-container {
+    display: flex;
+    align-items: center;
+}
+.bar {
+    height: 16px;
+    font-family: "Gopher", sans-serif;
+    color: #fdecec;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    overflow: hidden;
+    background: rgba(21,79,187);
+    border-radius: 5px;
+
+}
+.label {
+    margin-left: 10px;
+}
 
 
-    .answer-container {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
-        overflow: auto;
-    }
-    .button.selected {
-        background-color: #007BFF;
-        color: white;
-    }

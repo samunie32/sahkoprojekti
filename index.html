@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
@@ -176,25 +176,24 @@
                             data: {
                                 labels: labels,
                                 datasets: [
+
                                     {
                                         label: "Kulutus (" + yLabel + ")",
                                         data: data,
                                         type: 'bar',
-                                        borderColor: "rgb(49,41,54, 0.5)",
-                                        backgroundColor: "rgb(49,41,54, 0.2)",
+                                        borderColor: "rgba(21,79,187,0.7)",
+                                        backgroundColor: "rgb(21,79,187,0.7)",
                                         borderWidth: 2,
                                         pointRadius: 2,
                                         hoverRadius:5,
-                                        pointBackgroundColor: "rgb(49,41,54)",
-                                        pointBorderColor: "rgb(49,41,54)",
                                         fill: false
                                     },
                                     {
                                         label: "Pohjakulutus",
                                         data: Array(labels.length).fill(calculateBaseConsumption(data)),
                                         type: 'line',
-                                        borderColor: "rgb(255,0,0, 0.5)",
-                                        backgroundColor: "rgba(0,0,0,0)",
+                                        borderColor: "rgba(241,90,90)",
+                                        backgroundColor: "rgba(241,90,90)",
                                         borderWidth: 2,
                                         pointRadius: 0,
                                         fill: false
@@ -239,8 +238,7 @@
                                 plugins: {
                                     title: {
                                         display: true,
-                                        text: ' Arvio vuosikulutuksesta: ' + yearlyConsumption.toFixed(2) +"kWh" + " " + apartmentType,
-
+                                        text: 'Arvio vuosikulutuksesta: ' + yearlyConsumption.toFixed(2) +"kWh" + " " + '\nAsunnon tyyppi: ' + apartmentType,
                                         font: {
                                             family: 'Gopher',
                                             weight: 'bold',
@@ -488,19 +486,42 @@
     <button class="button button2" onclick="Upload()">Lataa tiedosto</button>
 </div>
 
-<div class=sidebar id="sidebar">
+
+
+<div class="sidebar" id="sidebar">
     <h2>Sähkölaitteiden keskivertokulutus vuodessa</h2>
-    <p>Kylmälaitteet: 430kWh</p>
-    <p>Kodin elektroniikka: 390kWh </p>
-    <p>Ruoan valmistus ja astianpesu: 250kWh </p>
-    <p>Valaistus: 170kWh</p>
-    <p>Pyykinpesu: 80kWh</p>
-    <p>Muu: 80kWh</p>
+    <div class="bar-container" id="fridge"><div class="bar"><span class="percentage"></span></div><span class="label">Kylmälaitteet</span></div>
+    <div class="bar-container" id="electronics"><div class="bar"><span class="percentage"></span></div><span class="label">Kodin elektroniikka</span></div>
+    <div class="bar-container" id="food"><div class="bar"><span class="percentage"></span></div><span class="label">Ruoan valmistus ja astianpesu</span></div>
+    <div class="bar-container" id="lighting"><div class="bar"><span class="percentage"></span></div><span class="label">Valaistus</span></div>
+    <div class="bar-container" id="laundry"><div class="bar"><span class="percentage"></span></div><span class="label">Pyykinpesu</span></div>
+    <div class="bar-container" id="other"><div class="bar"><span class="percentage"></span></div><span class="label">Muu</span></div>
 </div>
+
+
+<script>
+    var totalConsumption = 430 + 390 + 250 + 170 + 80 + 80;
+
+    var appliances = [
+        { id: 'fridge', consumption: 430 },
+        { id: 'electronics', consumption: 390 },
+        { id: 'food', consumption: 250 },
+        { id: 'lighting', consumption: 170 },
+        { id: 'laundry', consumption: 80 },
+        { id: 'other', consumption: 80 }
+    ];
+
+    appliances.forEach(function(appliance) {
+        var percentage = (appliance.consumption / totalConsumption * 100).toFixed(1);
+        var container = document.getElementById(appliance.id);
+        container.querySelector('.bar').style.width = percentage + '%';
+        container.querySelector('.percentage').textContent = percentage + '%';
+    });
+</script>
 
 <div style="clear:both"></div> <!-- Lisätty clear:both, jotta uusi rivit alkavat oikein -->
 
-<div class="container2">
+<div class="container3">
     <div id="dvCSV"></div>
     <canvas id="myChart" width="650" height="450"></canvas>
     <div class="button-container hidden" id="buttonContainer"></div>
@@ -516,11 +537,7 @@
 
 
 <div class="sidebar2" id="sidebar2">
-    <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
-    <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
-    <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
-    <button id="calculation-btn" class="button button2" onclick="openCalculationModal()">Laskentatapa</button>
-    <div id="monthPicker">
+    <div id="monthPicker" style="display: flex; align-items: center;">
         <button id="prevMonth" class="button button2">&#60;</button>
         <span id="currentMonth"></span>
         <button id="nextMonth" class="button button2">&#62;</button>
@@ -537,6 +554,10 @@
             xhr.send();
         });
     </script>
+    <button id="filterButton" class="button button2" onclick="updateFilteredChart()">Kulutuspiikit</button>
+    <button id="filterButton2" class="button button2" onclick="updateFilteredChart2()">Peruskulutus</button>
+    <button id="filterButton1" class="button button2" onclick="updateFilteredChart1()">Kaikki</button>
+    <button id="calculation-btn" class="button button2" onclick="openCalculationModal()">Laskentatapa</button>
 </div>
 
 <script>
