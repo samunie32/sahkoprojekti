@@ -145,6 +145,67 @@
                         } else {
                             apartmentType = "jokin muu";
                         }
+                        function fetchHourlyPrices() {
+                            return fetch('hinta.csv')
+                                .then(response => response.text())
+                                .then(data => {
+                                    console.log('Raw CSV data:', data);
+
+                                    const rows = data.split('\n');
+                                    const prices = [];
+                                    const times = [];
+
+                                    for (let i = 1; i < rows.length; i++) {
+                                        const columns = rows[i].split(',');
+                                        console.log('Columns:', columns);
+
+                                        const timeString = columns[2].replace(/"/g, '').trim();
+                                        console.log('Time string:', timeString);
+
+                                        const priceString = columns[4].replace(/"/g, '').trim();
+                                        console.log('Price string:', priceString);
+
+                                        const price = (parseFloat(priceString) / 100).toFixed(2);
+                                        console.log('Formatted price:', price);
+
+                                        if (!isNaN(price)) {
+                                            prices.push(price);
+                                            times.push(timeString);
+                                        } else {
+                                            console.log('Invalid price value at row', i + 1, 'Columns:', columns);
+                                        }
+                                    }
+
+                                    return { prices, times };
+                                });
+                        }
+
+                        fetchHourlyPrices()
+                            .then(data => {
+                                console.log('Prices:', data.prices);
+                                console.log('Times:', data.times);
+                                console.log('Length:', data.prices.length);
+
+                                // Update the chart with the prices
+                                myChart.data.datasets.push({
+                                    label: 'Hinta',
+                                    data: data.prices,
+                                    type: 'line',
+                                    borderColor: 'rgba(255, 0, 0, 0.7)',
+                                    backgroundColor: 'rgba(255, 0, 0, 0.7)',
+                                    borderWidth: 2,
+                                    pointRadius: 0,
+                                    fill: false
+                                });
+
+                                myChart.update();
+                            })
+                            .catch(error => console.error('Error:', error));
+
+
+
+
+
 
                         function calculateBaseConsumption(data) {
                             // Laske noin 70% kulutus
